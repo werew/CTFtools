@@ -231,6 +231,7 @@ int main(int argc, char *argv[]){
         // Register function to be called to instrument traces
         TRACE_AddInstrumentFunction(Instrument_trace, 0);
     } else {
+        PIN_InitSymbols();
         // Register function to be called to instrument functions
         RTN_AddInstrumentFunction(Instrument_routine, 0);
     }
