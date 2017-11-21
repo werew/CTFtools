@@ -8,6 +8,8 @@
 
     Some tips:
     - Use option -b to trace baic blocks
+    - Tracing routines relies on symbols, therefore this will not
+      well on stripped binaries
     - Add/remove dynamic libs path to untrace/trace them (you can comment out
       the check at Instrument_image to blacklist all dynamically loaded libs)
     - It can be useful to disable ASLR 
