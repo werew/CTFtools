@@ -31,7 +31,7 @@
 
 
 /*********************  Types  ****************************/
-typedef std::map<std::string, std::pair<ADDRINT, ADDRINT>> MODULE_BLACKLIST_T;
+typedef std::map<std::string, std::pair<ADDRINT, ADDRINT> > MODULE_BLACKLIST_T;
 
 
 /************* Some global stuffs *************************/
@@ -197,7 +197,7 @@ VOID Instrument_image(IMG img, VOID * v){
     ADDRINT module_high_limit = IMG_HighAddress(img); 
 
 
-    pair<string, pair<ADDRINT, ADDRINT>> module_info = make_pair(
+    pair<string, pair<ADDRINT, ADDRINT> > module_info = make_pair(
         image_path, make_pair(module_low_limit, module_high_limit)
     );
 
