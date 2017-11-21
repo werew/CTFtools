@@ -21,12 +21,12 @@ echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
 ../../../pin -t obj-intel64/coverage.so -o trace1 -- ./myprog                # base execution
 ../../../pin -t obj-intel64/coverage.so -o trace2 -- ./myprog -some-option 
 
-# Prune traces
+# Prune traces (Optional)
 sort trace1 | uniq > out1
 sort trace2 | uniq > out2
 
 # Find the differences
-diff out1 out2
+./diff_traces.py out1 out2
 
 ```
 
