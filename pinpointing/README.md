@@ -1,11 +1,4 @@
-### A small collection of [pin](https://software.intel.com/en-us/articles/pin-a-dynamic-binary-instrumentation-tool) tools for various analysis tasks
-
-Here there is a small descriptions of each tool. More infos can be
-found inside the tools.
-
-#### coverage.cpp
-
-Trace the execution of a program. 
+`coverage.cpp` traces the execution of a program. 
 Traces can be taken at two granularity levels: funtions (default), basic blocks (option -b).
 
 Example tracing basic blocks: `../../../pin -t obj-intel64/coverage.so -o output -b -- ./myprog`
@@ -27,6 +20,5 @@ sort trace2 | uniq > out2
 
 # Find the differences
 ./diff_traces.py out1 out2
-
 ```
 
