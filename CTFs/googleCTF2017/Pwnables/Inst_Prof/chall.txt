@@ -1,0 +1,4 @@
+Please help test our new compiler micro-service
+Challenge running at inst-prof.ctfcompetition.com:1337
+
+    - inst_prof 
