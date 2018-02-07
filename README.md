@@ -1,5 +1,5 @@
 # REstuffs
-A miscellaneous of tools, scripts, etc. for software analysis and reverse engineering 
+A miscellaneous of tools, scripts, documents, etc. for software analysis and reverse engineering 
 
 
 | Folder                           | Content                                                                                 |
@@ -9,4 +9,5 @@ A miscellaneous of tools, scripts, etc. for software analysis and reverse engine
 |`cheatsheets`                     | Chetasheets and various examples of tools' usage                                        |
 |`CTFs`                            | Collection of old CTFs with relative solutions                                          |
 |`pinpointing`                     | Useful stuffs to help identify which part of the program is responsible for what        |
+|`signatures`                      | Material related to function signatures (scripts, FLIRT databases, etc.)     |
 
