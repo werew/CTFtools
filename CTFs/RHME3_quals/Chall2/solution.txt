@@ -1,1 +1,0 @@
-I solved this challenge by simply using ChipWhisperer.
