@@ -1,5 +1,5 @@
-# REstuffs
-A miscellaneous of tools, scripts, documents, etc. for software analysis and reverse engineering 
+# CTFtools
+A miscellaneous of tools, scripts, documents, etc. for software analysis, reverse engineering and various other CTF tasks. 
 
 
 | Folder                           | Content                                                                                 |
