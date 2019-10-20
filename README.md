@@ -11,4 +11,5 @@ A miscellaneous of tools, scripts, documents, etc. for software analysis, revers
 |`malware_anal`                    | Malware analysis related material                                                       |
 |`pinpointing`                     | Useful stuffs to help identify which part of the program is responsible for what        |
 |`signatures`                      | Material related to function signatures (scripts, FLIRT databases, etc.)                |
+|`libs`                            | Collection of different versions of libc                                                |
 
