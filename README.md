@@ -4,7 +4,7 @@ A miscellaneous of tools, scripts, documents, etc. for software analysis, revers
 
 | Folder                           | Content                                                                                 |
 |----------------------------------|-----------------------------------------------------------------------------------------|
-|`base_gdb_script`                 | A convenience script to use as a base for writing a gdb script very fast                |
+|`templates`                       | Collection of templates (e.g. gdb, pwntools, etc.)                                      |
 |`coverage`                        | Tools to mesure code coverage during executions                                         |
 |`cheatsheets`                     | Chetasheets and various examples of tools' usage                                        |
 |`CTFs`                            | Collection of old CTFs with relative solutions                                          |
