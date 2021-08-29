@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 from pwn import *
 
@@ -22,7 +22,7 @@ libc = ELF(LIBC) if LIBC else None
 # Breakpoints
 global_breakpoints=[]
 
-# ----------- Launchers ------------
+# ----------- Helpers ------------
 
 def get_base_address(proc):
     return int(open("/proc/{}/maps".format(proc.pid), 'rb').readlines()[0].split('-')[0], 16)
@@ -35,6 +35,8 @@ def attach(breakpoints):
     for bp in breakpoints:
         script += "b *0x%x\n"%(PIE+bp)
     gdb.attach(p, gdbscript=script)
+
+# ----------- Launchers ------------
 
 def run_debug(binary, breakpoints=[], libc=None, ld=None):
     PIE = get_base_address(p)
@@ -49,8 +51,7 @@ def run_debug(binary, breakpoints=[], libc=None, ld=None):
         if ld:
             return gdb.debug([ld, binary], env={'LD_PRELOAD', libc})
         else:
-            log.warn('Using custom libc, however no loader provided. This may
-                    cause a crash')
+            log.warn('Using custom libc, however no loader provided. This may cause a crash')
             return gdb.debug([binary], env={'LD_PRELOAD', libc})
 
     return gdb.debug(binary)
@@ -61,8 +62,7 @@ def run_plain(binary, libc=None, ld=None):
         if ld:
             return process([ld, binary], env={'LD_PRELOAD', libc})
         else:
-            log.warn('Using custom libc, however no loader provided. This may
-                    cause a crash')
+            log.warn('Using custom libc, however no loader provided. This may cause a crash')
             return process([binary], env={'LD_PRELOAD', libc})
 
     return process(binary)
@@ -73,14 +73,14 @@ def start():
         return remote(HOST, PORT)
 
     elif args.DEBUG:
-        log.info("LOCAL PROCESS")
+        log.info("LOCAL PROCESS (DEBUG)")
         return run_debug(BINARY, libc=LIBC, ld=LD)
 
     else:
         log.info("LOCAL PROCESS")
         return run_plain(BINARY, libc=LIBC, ld=LD)
 
-# ----------- Helpers ------------
+# ----------- Examples -------------
 
 def add(content):
     p.sendlineafter('> ', '1')
