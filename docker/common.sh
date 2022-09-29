@@ -4,6 +4,9 @@ TAG="ctf"
 CONTAINER="werew"
 IMAGE="$CONTAINER:$TAG"
 
+CONTAINER_USERNAME="werew"
+CONTAINER_HOME="/home/$CONTAINER_USERNAME"
+
 if [ `whoami` != 'root' ]; then
     echo "You must run this script as root" >&2
     exit 1

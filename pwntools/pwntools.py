@@ -57,15 +57,18 @@ def run_debug(binary, breakpoints=[], libc=None, ld=None):
     return gdb.debug(binary)
 
 def run_plain(binary, libc=None, ld=None):
+    args = []
+    kwargs = {}
     if libc:
         log.info('Running preloading libc "%s"' % libc)
         if ld:
-            return process([ld, binary], env={'LD_PRELOAD', libc})
+            args.append(ld)
         else:
             log.warn('Using custom libc, however no loader provided. This may cause a crash')
-            return process([binary], env={'LD_PRELOAD', libc})
+        kwargs['env'] = {'LD_PRELOAD': libc}
 
-    return process(binary)
+    args.append(binary)
+    return process(args, **kwargs, stdout=process.PTY, stdin=process.PTY)
 
 def start():
     if args.REMOTE:

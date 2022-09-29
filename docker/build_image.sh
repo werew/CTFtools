@@ -6,4 +6,4 @@ source ./common.sh
 
 rm_image
 
-docker build . -t $IMAGE --no-cache
+docker build . -t $IMAGE --no-cache --build-arg USERNAME=$CONTAINER_USERNAME

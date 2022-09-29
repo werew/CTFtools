@@ -19,13 +19,13 @@ ADD --chown=$USERNAME:$USERNAME resources/.* /home/$USERNAME/
 # Install essential packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -yq
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yq sudo vim tmux zsh git cmake curl ripgrep gdb python3 pip wget
-RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Radare
 RUN git clone https://github.com/radareorg/radare2 && cd radare2 && sys/install.sh
 
+# GEF
+RUN bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 
-# gef, radare
-# python deps
 
 # Some config
 ENTRYPOINT ["/bin/zsh"]

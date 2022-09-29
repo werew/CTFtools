@@ -1,4 +1,5 @@
 from web3 import Web3, Account
+import web3
 from solcx import compile_files
 from eth_tester import PyEVMBackend
 import eth_abi
