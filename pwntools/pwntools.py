@@ -5,8 +5,8 @@ from pwn import *
 # ----------- Configuration ------------
 
 # Configure accordingly
-BINARY = './target'
-HOST, PORT = 'exaplehost', 42
+BINARY = './main'
+HOST, PORT = 'localhost', 1337
 LIBC = None # Example: './libc-2.27.so'
 LD   = None # Example: './ld.so.2' 
 
@@ -20,41 +20,55 @@ elf  = ELF(BINARY)
 libc = ELF(LIBC) if LIBC else None
 
 # Breakpoints
-global_breakpoints=[]
+gdb_breakpoints=[]
+
+# GDB init commands
+gdb_commands=[]
+
 
 # ----------- Helpers ------------
 
 def get_base_address(proc):
-    return int(open("/proc/{}/maps".format(proc.pid), 'rb').readlines()[0].split('-')[0], 16)
+    return int(open("/proc/{}/maps".format(proc.pid), 'rb').readlines()[0].split(b'-')[0], 16)
 
-def attach(breakpoints):
-    script = "handle SIGALRM ignore\n"
-    PIE = get_base_address(p)
-    script += "set $_base = 0x{:x}\n".format(PIE)
-    breakpoints.extend(global_breakpoints)
-    for bp in breakpoints:
-        script += "b *0x%x\n"%(PIE+bp)
-    gdb.attach(p, gdbscript=script)
 
 # ----------- Launchers ------------
 
-def run_debug(binary, breakpoints=[], libc=None, ld=None):
-    PIE = get_base_address(p)
+def make_gdbscript(p=None):
     script = "handle SIGALRM ignore\n"
-    script += "set $_base = 0x{:x}\n".format(PIE)
-    breakpoints.extend(global_breakpoints)
-    for bp in breakpoints:
-        script += "b *0x%x\n"%(PIE+bp)
 
+    base = 0
+
+    # PIE case (TODO fix this)
+    #if p is not None:
+    #    base = get_base_address(p)
+    #    script += "set $_base = 0x{:x}\n".format(base)
+
+    for bp in gdb_breakpoints:
+        script += "b *0x%x\n"%(base + bp)
+
+    for line in gdb_commands:
+        script += f"{line}\n"
+
+    return script
+
+def gdb_attach(p):
+    return gdb.attach(p, gdbscript=make_gdbscript(p=p))
+
+def run_debug(binary, libc=None, ld=None):
+    args = []
+    kwargs = {}
     if libc:
         log.info('Running preloading libc "%s"' % libc)
         if ld:
-            return gdb.debug([ld, binary], env={'LD_PRELOAD', libc})
+            args.append(ld)
         else:
             log.warn('Using custom libc, however no loader provided. This may cause a crash')
-            return gdb.debug([binary], env={'LD_PRELOAD', libc})
+        kwargs['env'] = {'LD_PRELOAD': libc}
 
-    return gdb.debug(binary)
+    args.append(binary)
+    kwargs["gdbscript"] = make_gdbscript()
+    return gdb.debug(args, **kwargs)
 
 def run_plain(binary, libc=None, ld=None):
     args = []
@@ -75,7 +89,7 @@ def start():
         log.info("REMOTE PROCESS")
         return remote(HOST, PORT)
 
-    elif args.DEBUG:
+    elif args.DBG or args.DEBUG:
         log.info("LOCAL PROCESS (DEBUG)")
         return run_debug(BINARY, libc=LIBC, ld=LD)
 
@@ -83,7 +97,7 @@ def start():
         log.info("LOCAL PROCESS")
         return run_plain(BINARY, libc=LIBC, ld=LD)
 
-# ----------- Examples -------------
+# ----------- Functions -------------
 
 def add(content):
     p.sendlineafter('> ', '1')
@@ -96,9 +110,21 @@ def free():
     p.sendlineafter('> ', '3')
 
 
-
 # ----------- Main Logic ------------
+
+# Define GDB breakpoints before starting
+# gdb_breakpoints.append(0x0040066a)
+
+# Define any extra GDB command to be executed
+# (this is exec after breakpoints are set)
+#gdb_commands.append("continue")
+
+# Launch the process
 p = start()
 
+# Uncomment this for attaching a debugger
+#gdb_attach(p)
+
+# Profit
 p.interactive()
 
