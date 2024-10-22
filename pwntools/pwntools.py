@@ -87,6 +87,8 @@ def run_plain(binary, libc=None, ld=None):
 def start():
     if args.REMOTE:
         log.info("REMOTE PROCESS")
+        HOST, PORT = 'blackhat4-26cefe1e3f69295ff4899537770f670e-0.chals.bh.ctf.sa', 443                                                                                                      
+        return remote(HOST, PORT, ssl=True, sni=HOST)
         return remote(HOST, PORT)
 
     elif args.DBG or args.DEBUG:

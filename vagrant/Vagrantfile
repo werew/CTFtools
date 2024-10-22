@@ -44,7 +44,6 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder "/home/werew/shared", "/home/vagrant/shared"
-  config.vm.synced_folder "/home/werew/Desktop/my_lab/projects/CTFtools", "/home/vagrant/CTFtools"
 
 
   # Provider-specific configuration so you can fine-tune various
@@ -74,12 +73,8 @@ Vagrant.configure("2") do |config|
 
       chsh -s /bin/zsh
 
-      #git clone https://github.com/radareorg/radare2 && (cd radare2 && sys/install.sh)
       pip install --user --no-input pwntools
       bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
-
-
-
   SHELL
 
   # Add files
