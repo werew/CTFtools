@@ -6,7 +6,7 @@ source ./common.sh
 
 rm_container
 
-PRIV=0
+PRIV=1
 
 HOST_SHARED_DIR="/home/${SUDO_USER:-$USER}/shared"
 mkdir -p "$HOST_SHARED_DIR"
@@ -14,19 +14,20 @@ mkdir -p "$HOST_SHARED_DIR"
 if [ $PRIV -eq 1 ]
 then
 # Priviledged
+# Ulimit: https://github.com/greyltc-org/docker-archlinux-aur/issues/7
 echo "Creating priviledged container"
 docker create \
     --name=$CONTAINER \
     --mount type=tmpfs,destination=/tmp,tmpfs-mode=777 \
     -v "$HOST_SHARED_DIR":"$CONTAINER_HOME/shared" \
     -v "/tmp/.X11-unix:/tmp/.X11-unix" \
-    --ulimit nofile=1024:10240 \ # https://github.com/greyltc-org/docker-archlinux-aur/issues/7 
+    --ulimit nofile=1024:10240 \
     --net=host \
     --cap-add=SYS_PTRACE \
     --security-opt seccomp=unconfined \
     --env="DISPLAY" \
     -e DISPLAY="$DISPLAY" \
-    -v "$HOME/.Xauthority":"/home/$USER/.Xauthority":rw \
+    -v "/home/${SUDO_USER:-$USER}/.Xauthority":"/home/$CONTAINER_USERNAME/.Xauthority":rw \
     -i -t $IMAGE
 
 else
